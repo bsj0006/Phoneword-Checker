@@ -1,0 +1,37 @@
+New Plan
+	
+	Load dictionary file
+	Get Number from user. Represent number as a phone number object.
+	Binary search for the phoneword.
+	Check up and down for matches.
+	Output values or lack of values.
+	Reset and repeat.
+
+	-Use more object oriented design
+	-Better Commenting a must*/
+
+New classes
+	-Ckecker
+		Will check the user-inputed number for validity.
+		Will store number as PhoneNumber class.
+		Will check dictionary. 
+		Store results as Node class.
+		Will print Node.
+		Will reset.
+
+	-PhoneNumber
+		Requires VALID phonenumber in constructor.
+		Can generate array of possible letter combinations.
+		Can generate max and min letter combinations.
+		Can check if a word is a phoneword for it.
+
+	-Node
+		Linked list for storing strings.
+
+	-OpenFile
+		Load input file.
+
+	-Main
+		Gets number from user.
+		Creates checker with number as argument.
+		Deletes Checker upon termination.
