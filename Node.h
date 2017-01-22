@@ -1,17 +1,23 @@
+#pragma once
 #include <string>
+
+using namespace std;
 
 class Node
 {
 
 public:
-	string* next;
+	Node* next;
 
-	Node();
+	Node(string val);
 	~Node();
 
 	void add_node();
-
 	void delete_all();
+	void print();
 	
+private:
+	string value;
+
 };
 

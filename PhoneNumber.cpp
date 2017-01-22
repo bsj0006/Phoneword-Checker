@@ -25,12 +25,12 @@ string PhoneNumber::getMaxWord()
 	return string();
 }
 
-string PhoneNumber::getMinWord()
+std::string PhoneNumber::getMinWord()
 {
 	return string();
 }
 
-string PhoneNumber::getWord(int)
+string PhoneNumber::getWord(int num)
 {
 	return string();
 }

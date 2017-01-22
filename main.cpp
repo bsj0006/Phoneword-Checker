@@ -1,15 +1,8 @@
-#include <fstream>
-#include <iostream>
-#include <iomanip>
-#include <string>
+#pragma once
 #include "Checker.h"
+#include "resource.h"
 
 using namespace std;
-
-void validateWord(string generated);
-void numberToLetter(string phone_number, string generated, int phone_pos, ifstream& dictionary);
-void createList(string phone_number, ifstream& dictionary);
-int binary_search(string* string_address, string search, int low, int high);
 
 const int Height = 8, Width = 4;
 char letters[Height][Width] = { { 'a','b','c',' ' },{ 'd','e','f',' ' },{ 'g','h','i',' ' },{ 'j','k','l',' ' },{ 'm','n','o',' ' },{ 'p','q','r','s' },{ 't','u','v',' ' },{ 'w','x','y','z' } };
@@ -176,7 +169,7 @@ int binary_search(string* string_address, string search, int low, int high)
 		}
 	}
 }
-
+*/
 
 
 int main(int)
@@ -204,17 +197,10 @@ int main(int)
 
 		//ask to continue
 			cout << endl << "Type Y to continue or a different letter to quit." << endl;
+			cin >> input;
 	}
 	//if yes, loop continues
-	while (input == "Y" || input != "y");
+	while (input == "Y" || input == "y");
 
 	delete numChecker;
-}
-*/
-
-int main(void)
-{
-	cout << "l" << endl;
-	system("pause");
-	return 1;
 }
