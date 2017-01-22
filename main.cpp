@@ -2,18 +2,16 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include "Checker.h"
 
 using namespace std;
 
-bool checkNumber(string number);
 void validateWord(string generated);
 void numberToLetter(string phone_number, string generated, int phone_pos, ifstream& dictionary);
-bool openfile(ifstream& file, string location);
-bool openfile(ofstream& file, string location);
 void createList(string phone_number, ifstream& dictionary);
 int binary_search(string* string_address, string search, int low, int high);
 
-const int Height = 8, Width = 4, Allowed_Length = 7;
+const int Height = 8, Width = 4;
 char letters[Height][Width] = { { 'a','b','c',' ' },{ 'd','e','f',' ' },{ 'g','h','i',' ' },{ 'j','k','l',' ' },{ 'm','n','o',' ' },{ 'p','q','r','s' },{ 't','u','v',' ' },{ 'w','x','y','z' } };
 
 long total_combos = 0;
@@ -63,71 +61,6 @@ int main(void)
 	return 0;
 }
 
-//--------------------------------------------------------------
-// OPEN INPUT FILES
-// RETURN TRUE IF OPENED
-//--------------------------------------------------------------
-bool openfile(ifstream& file, string location)//infile variant
-{
-	file.open(location);
-	if (!file)
-	{
-		cout << "Unable to open file at " << location << endl;
-		system("pause");
-		return false;
-	}
-	else
-	{
-		cout << "File opened at " << location << endl;
-		return true;
-	}
-}
-
-
-//--------------------------------------------------------------
-// OPEN OUTPUT FILES
-// RETURN TRUE IF OPENED
-//--------------------------------------------------------------
-bool openfile(ofstream& file, string location)
-{
-	file.open(location);
-	if (!file)
-	{
-		cout << "Unable to open file at " << location << endl;
-		system("pause");
-		return false;
-	}
-	else
-	{
-		cout << "File opened at " << location << endl;
-		return true;
-	}
-}
-
-
-//----------------------------------------------------------
-// Make sure the number can be used. 
-// RETURNS true if valid.
-//----------------------------------------------------------
-bool checkNumber(string number)
-{
-	if (number.size() != Allowed_Length)
-		return false;
-	for (unsigned int pos = 0;pos < number.size();pos++)
-	{
-		if (number[pos] == '0'||number[pos]=='1')
-		{
-			cout << "Try a phone number without a 1 or a 0 in it." << endl;
-			return false;
-		}
-		if (number[pos] < '1' || number[pos] > '9')
-		{
-			cout << "Enter numbers only." << endl;
-			return false;
-		}
-	}
-	return true;
-}
 
 
 //--------------------------------------------------------------------------------------------------
@@ -242,4 +175,28 @@ int binary_search(string* string_address, string search, int low, int high)
 			low = mid + 1;
 		}
 	}
+}
+
+
+
+int main(int)
+{
+	Checker* numChecker = new Checker();
+	string input="";
+	do
+	{
+		do {
+			cout << "Enter "
+				//ask user
+				//get input
+		}
+		while(!(numChecker->isValid(input)))
+		//run checker and wait for return
+		//ask to continue
+	}
+	//if yes, loop continues
+	while(input!="N"||input!="n")
+
+
+
 }

@@ -9,5 +9,6 @@ class Checker
 public:
 	Checker();
 	~Checker();
+	bool isValid(string number)
 };
 
