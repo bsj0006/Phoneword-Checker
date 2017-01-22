@@ -19,7 +19,7 @@ long total_checks = 0;
 
 string *wordlist;
 int  wordlist_length=0;
-
+/*
 int main(void)
 {
 	system("color 02");
@@ -181,22 +181,40 @@ int binary_search(string* string_address, string search, int low, int high)
 
 int main(int)
 {
+	//Object for validating phone number
 	Checker* numChecker = new Checker();
+	//String for storing user input
 	string input="";
+
 	do
 	{
 		do {
-			cout << "Enter "
-				//ask user
-				//get input
+			//ask user
+			cout << endl << "Enter a phone number to be checked in the format: 5556789."
+				<< endl << "It can only contain numbers 2-9." << endl;
+			
+			//get input
+			cin >> input;
 		}
-		while(!(numChecker->isValid(input)))
-		//run checker and wait for return
+		//check if input is num 2-9
+		while (!(numChecker->isValid(input)));
+
+			//run checker and wait for return
+			numChecker->runCheck(input);
+
 		//ask to continue
+			cout << endl << "Type Y to continue or a different letter to quit." << endl;
 	}
 	//if yes, loop continues
-	while(input!="N"||input!="n")
+	while (input == "Y" || input != "y");
 
+	delete numChecker;
+}
+*/
 
-
+int main(void)
+{
+	cout << "l" << endl;
+	system("pause");
+	return 1;
 }

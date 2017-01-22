@@ -10,10 +10,14 @@ const int ALLOWED_LENGTH = 7;
 
 Checker::Checker()
 {
+	//DEBUG
+	cout << "Checker created: " << this << endl;
 }
 
 Checker::~Checker()
 {
+	//DEBUG
+	cout << "Checker deleted: " << this << endl;
 }
 
 //-------------------------------------------------------------
@@ -21,7 +25,7 @@ Checker::~Checker()
 //
 // Returns true when number is a valid 7 digit phone number
 //-------------------------------------------------------------
-bool isValid(string number)
+bool Checker::isValid(string number)
 {
 	//Return false if the phone number isnt 7 long
 	if (number.size() != ALLOWED_LENGTH)
@@ -43,5 +47,10 @@ bool isValid(string number)
 	}
 	//Returns true when it is valid
 	return true;
+}
+
+int Checker::runCheck(string number)
+{
+	return 0;
 }
 
