@@ -1,4 +1,4 @@
-#pragma once
+#include "Node.h"
 #include <string>
 
 using namespace std;
@@ -6,16 +6,20 @@ using namespace std;
 class PhoneNumber
 {
 public:
-	PhoneNumber(string number);
+	PhoneNumber(string);
 	~PhoneNumber();
 
-	void setNum(string number);
-	string getNum(string number);
+	string getNumber();
+	
+	bool addWord(string);
+	bool findWord(string);
+	bool delWord(string);
 
-	string getMaxWord();
-	string getMinWord();
-	string getWord(int num);
-	int getComboCount();
+	bool printWords();
+
+private:
+	string number;
+	Node<string>* head;
 
 };
 

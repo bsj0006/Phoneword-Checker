@@ -2,22 +2,38 @@
 
 using namespace std;
 
-Node::Node(string val)
+template <class Type>
+Node<Type>::Node(Type val)
 {
+	value = val;
+	next = NULL;
 }
 
-Node::~Node()
+template <class Type>
+Node<Type>::~Node()
 {
+	if (next != NULL)
+		delete next;
+	next = NULL;
 }
 
-void Node::add_node()
+template <class Type>
+void Node<Type>::add_node(Node* node)
 {
+	next = node;
 }
 
-void Node::delete_all()
+template <class Type>
+Type Node<Type>::getValue()
 {
+	return value;
 }
 
-void Node::print()
+template <class Type>
+void Node<Type>::setValue(Type val)
 {
+	value = val;
 }
+
+template class Node<int>;
+template class Node<string>;

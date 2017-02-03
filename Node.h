@@ -3,21 +3,21 @@
 
 using namespace std;
 
-class Node
+template <class Type> class Node
 {
 
 public:
 	Node* next;
 
-	Node(string val);
+	Node(Type);
 	~Node();
 
-	void add_node();
-	void delete_all();
-	void print();
+	void add_node(Node*);
+	Type getValue();
+	void setValue(Type);
 	
 private:
-	string value;
+	Type value;
 
 };
 

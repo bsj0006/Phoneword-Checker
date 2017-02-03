@@ -1,6 +1,8 @@
 #pragma once
-#include "Checker.h"
+#include "PhoneNumber.h"
 #include "resource.h"
+#include <iostream>
+#include <string>
 
 using namespace std;
 
@@ -171,9 +173,11 @@ int binary_search(string* string_address, string search, int low, int high)
 }
 */
 
-
-int main(int)
+/*
+int run(int ret)
 {
+	if (ret = -1)
+		return -1;
 	//Object for validating phone number
 	Checker* numChecker = new Checker();
 	//String for storing user input
@@ -203,4 +207,15 @@ int main(int)
 	while (input == "Y" || input == "y");
 
 	delete numChecker;
+	return 0;
+}
+*/
+int main(void)
+{
+	string tta = "2223344";
+	PhoneNumber att = PhoneNumber(tta);
+	att.addWord("mailman");
+	//att.addWord("boogers");
+	cout << att.findWord("boogies") << endl;
+	system("pause");
 }

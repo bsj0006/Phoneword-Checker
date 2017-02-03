@@ -12,26 +12,32 @@ New Plan
 
 New classes
 	-Ckecker
-		Will check the user-inputed number for validity.
-		Will store number as PhoneNumber class.
-		Will check dictionary. 
-		Store results as Node class.
-		Will print Node.
-		Will reset.
+		Generates phonebook.
+		Will check the user-inputed number for validity;
+		Will store number as string;
+		Will check phonebook and get a node or null;
+		Will print node or print failure notice;
+
+	-Phonebook
+		Vector of phonenumbers
+		Can automatically insert words and add new phonenumbers
+		Maintains a sorted vector
+		Can perform binary search for valid words.
 
 	-PhoneNumber
-		Requires VALID phonenumber in constructor.
-		Can generate array of possible letter combinations.
-		Can generate max and min letter combinations.
-		Can check if a word is a phoneword for it.
+		Generated with a word. 
+		Can have words added to it.
+		Must have compare function.
 
 	-Node
-		Linked list for storing strings.
+		Linked list for storing generic types.
 
 	-OpenFile
 		Load input file.
 
 	-Main
+		Generate phonebook
 		Gets number from user.
 		Creates checker with number as argument.
 		Deletes Checker upon termination.
+		Delete phonebook
