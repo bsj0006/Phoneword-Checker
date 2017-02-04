@@ -11,7 +11,7 @@ New Plan
 	-Better Commenting a must*/
 
 New classes
-	-Ckecker
+	-Checker
 		Generates phonebook.
 		Will check the user-inputed number for validity;
 		Will store number as string;
