@@ -10,14 +10,17 @@ public:
 	Node* next;
 
 	Node(Type);
+	Node(Type,Type);
 	~Node();
 
 	void add_node(Node*);
-	Type getValue();
+	Type getPrimary();
 	void setValue(Type);
+	void setValue(Type,Type);
 	
 private:
-	Type value;
+	Type primary;
+	Type secondary;
 
 };
 

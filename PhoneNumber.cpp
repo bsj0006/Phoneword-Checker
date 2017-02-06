@@ -43,7 +43,7 @@ bool PhoneNumber::findWord(string word)
 	while (current != NULL)
 	{
 		word.compare("1112222");
-		if (word.compare(current->getValue()) == 0)
+		if (word.compare(current->getPrimary()) == 0)
 			return true;
 		current = current->next;
 	}
@@ -55,7 +55,7 @@ bool PhoneNumber::delWord(string word)
 	Node<string>* current = head;
 	if (head == NULL)
 		return false;
-	if (word.compare(current->getValue()) == 0)
+	if (word.compare(current->getPrimary()) == 0)
 	{
 		head = current->next;
 		current->next=NULL;
@@ -64,7 +64,7 @@ bool PhoneNumber::delWord(string word)
 	}
 	while (current->next != NULL)
 	{
-		if (word.compare(current->next->getValue()) == 0)
+		if (word.compare(current->next->getPrimary()) == 0)
 		{
 			Node<string>* found = current->next;
 			current->next = found->next;
@@ -84,7 +84,7 @@ bool PhoneNumber::printWords()
 		Node<string>* current = head;
 		while (current != NULL)
 		{
-			cout << current->getValue() << endl;
+			cout << current->getPrimary() << endl;
 		}
 		return true;
 	}

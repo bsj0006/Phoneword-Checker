@@ -1,5 +1,5 @@
 #pragma once
-#include "PhoneNumber.h"
+#include "Phonebook.h"
 #include "resource.h"
 #include <iostream>
 #include <string>
@@ -212,10 +212,7 @@ int run(int ret)
 */
 int main(void)
 {
-	string tta = "2223344";
-	PhoneNumber att = PhoneNumber(tta);
-	att.addWord("mailman");
-	//att.addWord("boogers");
-	cout << att.findWord("boogies") << endl;
+	Phonebook* p = new Phonebook();
+	p->addFromFile("C:/Temp/dictionary_seven_letter_words.txt");
 	system("pause");
 }

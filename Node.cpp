@@ -3,9 +3,17 @@
 using namespace std;
 
 template <class Type>
-Node<Type>::Node(Type val)
+Node<Type>::Node(Type prim)
 {
-	value = val;
+	primary = prim;
+	next = NULL;
+}
+
+template <class Type>
+Node<Type>::Node(Type prim, Type sec)
+{
+	primary =  prim;
+	secondary = sec;
 	next = NULL;
 }
 
@@ -24,15 +32,22 @@ void Node<Type>::add_node(Node* node)
 }
 
 template <class Type>
-Type Node<Type>::getValue()
+Type Node<Type>::getPrimary()
 {
-	return value;
+	return primary;
 }
 
 template <class Type>
-void Node<Type>::setValue(Type val)
+void Node<Type>::setValue(Type prim)
 {
-	value = val;
+	primary = prim;
+}
+
+template<class Type>
+void Node<Type>::setValue(Type prim, Type sec)
+{
+	primary = prim;
+	secondary = sec;
 }
 
 template class Node<int>;

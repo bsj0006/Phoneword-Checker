@@ -13,14 +13,82 @@ Phonebook::~Phonebook()
 	delete book;
 }
 
-bool Phonebook::addWord(string)
+bool Phonebook::addFromFile(string loc)
 {
-	return false;
+	ifstream stream;
+	if (!openfile(stream, loc))
+		return false;
+	string in;
+	while (!stream.eof())
+	{
+		cout << in << endl;
+		stream >> in;
+		addWord(in);
+	}
+	return true;	
+}
+
+bool Phonebook::addWord(string mainWord)
+{
+	//Generate phonenumber for word
+	string mainNumber = wordToNum(mainWord);
+	//Binary search for phonenumber
+
+	int mid; //This will be used to remember the phonenumber location
+	if (book->size() == 0)
+	{
+		mid = 0;
+		book->push_back(PhoneNumber(mainNumber));
+	}
+	int low = 0;
+	int high = book->size()-1;
+	bool found;
+
+	while (true)
+	{
+		mid = (low + high) / 2;
+		if ((book->at(mid).getNumber()).compare(mainNumber) == 0)
+		{
+			//Number is at mid
+			found = true;
+			break;
+		}
+		if (low == high)//Number not found, create new
+		{
+			found = false;
+			if ((book->at(mid).getNumber()).compare(mainNumber) == -1)//Phonenumber is placed behind mid
+			{
+				vector<PhoneNumber>::iterator it = book->begin() + mid;
+				book->insert(it, PhoneNumber(mainNumber));
+				mid++;
+			}
+			else //PhoneNumber is in front of mid
+			{
+				vector<PhoneNumber>::iterator it = book->begin() + mid - 1;
+				book->insert(it, PhoneNumber(mainNumber));
+			}
+		}
+		if ((book->at(mid).getNumber()).compare(mainNumber) == -1)
+		{
+			low = mid + 1;			
+		}
+		else
+		{
+			high = mid - 1;
+		}
+	}
+	//if not found, create number at mid from binary search
+
+	//iterate through posible "hybrids of word" Ex. numeral,num3ral,num3r4l,
+	//add each to found phonenumber(Do not need to findWord() for each if new phonenumber)
+	if (!(book->at(mid)).findWord(mainNumber))
+		(book->at(mid)).addWord(mainNumber);
+	return true;
 }
 
 bool Phonebook::verifyStr(string num)
 {
-	for (int c = 0; c < num.length(); c++)
+	for (unsigned int c = 0; c < num.length(); c++)
 	{
 		if (num.at(c) <= '0' || num.at(c) >= '9')
 			return false;
@@ -33,7 +101,7 @@ string Phonebook::wordToNum(string word)
 {
 	string ret = "";
 	char b = ' ';
-	for (int c = 0; c < word.length(); c++)
+	for (unsigned int c = 0; c < word.length(); c++)
 	{
 		b = word.at(c);
 		if ((b >= 'a' && b <= 'c') || (b >= 'A' && b <= 'C'))//A-C: 2
