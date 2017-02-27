@@ -1,3 +1,4 @@
+#pragma once
 #include "Node.h"
 #include <string>
 
@@ -11,7 +12,10 @@ public:
 
 	string getNumber();
 	
+	void forceWord(string);
+	void forceWord(string, string);
 	bool addWord(string);
+	bool addWord(string, string);
 	bool findWord(string);
 	bool delWord(string);
 
