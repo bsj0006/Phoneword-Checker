@@ -9,7 +9,7 @@ public:
 	Phonebook();
 	~Phonebook();
 
-	bool addFromFile(string);
+	bool addFromFile(string,bool);
 	bool addWord(string);
 	bool findWord(string);
 	bool delWord(string);
@@ -18,10 +18,12 @@ public:
 	string wordToNum(string);
 
 	bool printAllFor(string);
-	bool printFullFor(string);
-	bool printPartialFor(string);
+	Node<PhoneNumber>* getWordList(string);
+	void printD();
 
 private:
-	vector<PhoneNumber>* book;
+	vector<PhoneNumber*>* book;
+	void generateWords(string, int);
+	int debug;
 };
 

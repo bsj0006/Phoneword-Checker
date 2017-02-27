@@ -1,91 +1,190 @@
 #include "Phonebook.h"
 
-
-
 Phonebook::Phonebook()
 {
-	book = new vector<PhoneNumber>;
+	book = new vector<PhoneNumber*>();
+	debug = 0;
 }
-
 
 Phonebook::~Phonebook()
 {
 	delete book;
 }
 
-bool Phonebook::addFromFile(string loc)
+//------------------------------------------------------------------------
+// Takes strings from a specified file and adds them to the dictionary
+// Takes bool param to determine if word mutations should be made too
+// Returns false if file fails to open
+bool Phonebook::addFromFile(string loc, bool mutate)
 {
 	ifstream stream;
 	if (!openfile(stream, loc))
 		return false;
 	string in;
-	while (!stream.eof())
+	if (mutate)
 	{
-		cout << in << endl;
-		stream >> in;
-		addWord(in);
+		while (!stream.eof())
+		{
+			stream >> in;
+			generateWords(in, 0);
+		}
+	}
+	else
+	{
+		while (!stream.eof())
+		{
+			stream >> in;
+			addWord(in);
+		}
 	}
 	return true;	
 }
 
+//------------------------------------------------------------------------
+// Adds mainWord to the dictionary
+// Returns true if word is added
 bool Phonebook::addWord(string mainWord)
 {
 	//Generate phonenumber for word
 	string mainNumber = wordToNum(mainWord);
-	//Binary search for phonenumber
+	//This will be used to remember the phonenumber location
+	int accessPos; 
+	int low = 0;
+	int high = book->size() - 1;
+	int mid = 0;
+	//Try to find number in phonebook
+	bool found = false;
 
-	int mid; //This will be used to remember the phonenumber location
+
+	//If empty phonebook, add number
 	if (book->size() == 0)
 	{
-		mid = 0;
-		book->push_back(PhoneNumber(mainNumber));
+		accessPos = 0;
+		PhoneNumber* newEntry = new PhoneNumber(mainNumber);
+		book->push_back(newEntry);
 	}
-	int low = 0;
-	int high = book->size()-1;
-	bool found;
+	else {
+		while (low <= high)
+		{
+			mid = (low + high) / 2;
+			//if mid is target number
+			if (mainNumber.compare(book->at(mid)->getNumber()) == 0)
+			{
+				//cout << mainNumber << " already exist." << endl;
+				found = true;
+				accessPos = mid;
+				break;
+			}
+			//if search is less than mid
+			else if (mainNumber.compare(book->at(mid)->getNumber()) == -1)
+			{
+				high = mid - 1;
+			}
+			//if mid is greater than target number
+			//if search is greater than mid
+			else
+			{
+				low = mid + 1;
+			}
+		}
 
-	while (true)
+		//if not found, create number at mid from binary search
+		if (!found)
+		{
+			//Number goes in front of mid
+			if (mainNumber.compare(book->at(mid)->getNumber()) == -1)
+			{
+				vector<PhoneNumber*>::iterator ite = book->begin() + mid;
+				book->insert(ite, new PhoneNumber(mainNumber));
+				accessPos = mid;
+			}
+			//Number goes behind mid
+			else
+			{
+				vector<PhoneNumber*>::iterator ite = book->begin() + mid + 1;
+				book->insert(ite, new PhoneNumber(mainNumber));
+				accessPos = mid + 1;
+			}
+		}
+	}
+
+	debug++;
+	cout << mainWord << endl;
+	printD();
+	if(book->at(accessPos)->addWord(mainWord))
+		return true;
+	return false;
+}
+
+//------------------------------------------------------------------------
+// Finds mainWord inside book
+// Returns true if found, false otherwise
+bool Phonebook::findWord(string mainWord)
+{
+	int high = book->size()-1, mid = 0, low = 0;
+	string mainNumber = wordToNum(mainWord);
+	while (low <= high)
 	{
 		mid = (low + high) / 2;
-		if ((book->at(mid).getNumber()).compare(mainNumber) == 0)
+		//if mid is target number
+		if (mainNumber.compare(book->at(mid)->getNumber()) == 0)
 		{
-			//Number is at mid
-			found = true;
-			break;
+			if (book->at(mid)->findWord(mainWord))
+				return true;
+			else
+				return false;
 		}
-		if (low == high)//Number not found, create new
-		{
-			found = false;
-			if ((book->at(mid).getNumber()).compare(mainNumber) == -1)//Phonenumber is placed behind mid
-			{
-				vector<PhoneNumber>::iterator it = book->begin() + mid;
-				book->insert(it, PhoneNumber(mainNumber));
-				mid++;
-			}
-			else //PhoneNumber is in front of mid
-			{
-				vector<PhoneNumber>::iterator it = book->begin() + mid - 1;
-				book->insert(it, PhoneNumber(mainNumber));
-			}
-		}
-		if ((book->at(mid).getNumber()).compare(mainNumber) == -1)
-		{
-			low = mid + 1;			
-		}
-		else
+		//if search is less than mid
+		else if (mainNumber.compare(book->at(mid)->getNumber()) == -1)
 		{
 			high = mid - 1;
 		}
+		//if mid is greater than target number
+		//if search is greater than mid
+		else
+		{
+			low = mid + 1;
+		}
 	}
-	//if not found, create number at mid from binary search
-
-	//iterate through posible "hybrids of word" Ex. numeral,num3ral,num3r4l,
-	//add each to found phonenumber(Do not need to findWord() for each if new phonenumber)
-	if (!(book->at(mid)).findWord(mainNumber))
-		(book->at(mid)).addWord(mainNumber);
-	return true;
+	return false;
 }
 
+//------------------------------------------------------------------------
+// Deletes mainWord fom book.
+// Returns true if word is deleted, false otherwise.
+bool Phonebook::delWord(string mainWord)
+{
+	int high = book->size() - 1, mid = 0, low = 0;
+	string mainNumber = wordToNum(mainWord);
+	while (low <= high)
+	{
+		mid = (low + high) / 2;
+		//if mid is target number
+		if (mainNumber.compare(book->at(mid)->getNumber()) == 0)
+		{
+			if (book->at(mid)->delWord(mainWord))
+				return true;
+			else
+				return false;
+		}
+		//if search is less than mid
+		else if (mainNumber.compare(book->at(mid)->getNumber()) == -1)
+		{
+			high = mid - 1;
+		}
+		//if mid is greater than target number
+		//if search is greater than mid
+		else
+		{
+			low = mid + 1;
+		}
+	}
+	return false;
+}
+
+//------------------------------------------------------------------------
+// Verifies that a string only contains numbers.
+// Returns true if only numbers are in the string, false otherwise.
 bool Phonebook::verifyStr(string num)
 {
 	for (unsigned int c = 0; c < num.length(); c++)
@@ -96,7 +195,10 @@ bool Phonebook::verifyStr(string num)
 	return true;
 }
 
-//Converts each letter in word to a corresponding number
+
+//------------------------------------------------------------------------
+// Converts each letter in word to a corresponding number
+// Returns the converted string
 string Phonebook::wordToNum(string word)
 {
 	string ret = "";
@@ -138,4 +240,106 @@ string Phonebook::wordToNum(string word)
 		else ret += b; //Re-add char if it isnt A-Z Ex. T0NS1LS = 8067157
 	}
 	return ret;
+}
+
+bool Phonebook::printAllFor(string mainNumber)
+{
+	int high = book->size() - 1, mid = 0, low = 0;
+	while (low <= high)
+	{
+		mid = (low + high) / 2;
+		//if mid is target number
+		if (mainNumber.compare(book->at(mid)->getNumber()) == 0)
+		{
+			//print out all at mid
+			book->at(mid)->printWords();
+			return true;
+		}
+		//if search is less than mid
+		else if (mainNumber.compare(book->at(mid)->getNumber()) == -1)
+		{
+			high = mid - 1;
+		}
+		//if mid is greater than target number
+		//if search is greater than mid
+		else
+		{
+			low = mid + 1;
+		}
+	}
+	return false;
+}
+
+
+//------------------------------------------------------------------------
+// PRINTS DEBUG VALUE
+//
+void Phonebook::printD()
+{
+	cout << debug << endl;
+}
+
+
+//------------------------------------------------------------------------
+// Used to recursively create mutated words by changing letters to numbers
+// 
+void Phonebook::generateWords(string word, int pos)
+{
+	//8=B 5=S 3=E 1=L 7=T 0=O
+	if (pos == word.size())
+	{
+		addWord(word);
+		return;
+	}
+	//converts word to uppercase
+	word.at(pos) = toupper(word.at(pos));
+	if (word.at(pos) == 'B')
+	{
+		generateWords(word, pos + 1);
+		word.at(pos) = '8';
+		generateWords(word, pos + 1);
+		return;
+	}
+
+	if (word.at(pos) == 'T')
+	{
+		generateWords(word, pos + 1);
+		word.at(pos) = '7';
+		generateWords(word, pos + 1);
+		return;
+	}
+
+	if (word.at(pos) == 'S')
+	{
+		generateWords(word, pos + 1);
+		word.at(pos) = '5';
+		generateWords(word, pos + 1);
+		return;
+	}
+
+	if (word.at(pos) == 'E')
+	{
+		generateWords(word, pos + 1);
+		word.at(pos) = '3';
+		generateWords(word, pos + 1);
+		return;
+	}
+
+	if (word.at(pos) == 'L')
+	{
+		generateWords(word, pos + 1);
+		word.at(pos) = '1';
+		generateWords(word, pos + 1);
+		return;
+	}
+
+	if (word.at(pos) == 'O')
+	{
+		generateWords(word, pos + 1);
+		word.at(pos) = '0';
+		generateWords(word, pos + 1);
+		return;
+	}
+	generateWords(word, pos + 1);
+	return;
 }
