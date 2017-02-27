@@ -212,7 +212,20 @@ int run(int ret)
 */
 int main(void)
 {
+	string input="";
 	Phonebook* p = new Phonebook();
-	p->addFromFile("C:/Temp/dictionary_seven_letter_words.txt");
+	p->addFromFile("C:/Temp/dictionary_seven_letter_words.txt",false);
+	p->printD();
+	cout << "\nFinished.\n" << endl;
+	cin >> input;
+	while (p->verifyStr(input)&&input.length()==7)
+	{
+		if (!p->printAllFor("input"))
+		{
+			cout << "None found/n" << endl;
+		}
+		cin >> input;
+	}
+	
 	system("pause");
 }
