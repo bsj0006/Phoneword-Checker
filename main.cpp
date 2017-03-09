@@ -6,13 +6,15 @@
 
 using namespace std;
 
-/*
-int run(int ret)
+
+int main(void)
 {
-	if (ret = -1)
-		return -1;
 	//Object for validating phone number
-	Checker* numChecker = new Checker();
+	PhonebookManager* dict = new PhonebookManager();
+	dict->addFromFile("C:/Temp/dictionary_four_letter_words.txt", true);
+	dict->addFromFile("C:/Temp/dictionary_five_letter_words.txt", true);
+	dict->addFromFile("C:/Temp/dictionary_six_letter_words.txt", true);
+	dict->addFromFile("C:/Temp/dictionary_seven_letter_words.txt", true);
 	//String for storing user input
 	string input="";
 
@@ -27,38 +29,19 @@ int run(int ret)
 			cin >> input;
 		}
 		//check if input is num 2-9
-		while (!(numChecker->isValid(input)));
+		while (!(dict->verifyIntString(input)));
 
-			//run checker and wait for return
-			numChecker->runCheck(input);
+		//run checker and wait for return
+		cout << "In:" << input << endl;
 
 		//ask to continue
-			cout << endl << "Type Y to continue or a different letter to quit." << endl;
-			cin >> input;
-	}
-	//if yes, loop continues
-	while (input == "Y" || input == "y");
-
-	delete numChecker;
-	return 0;
-}
-*/
-int main(void)
-{
-	string input="";
-	PhonebookManager* phoneDict = new PhonebookManager();
-	phoneDict->addFromFile("C:/Temp/dictionary_seven_letter_words.txt", false);
-	cout << "Entries created: " << phoneDict->getTotal() << endl;
-	cout << "\nFinished.\n" << endl;
-	cin >> input;
-	while (p->verifyStr(input)&&input.length()==7)
-	{
-		if (!p->printAllFor("input"))
-		{
-			cout << "None found/n" << endl;
-		}
+		cout << endl << "Type Y to continue or a different letter to quit." << endl;
 		cin >> input;
 	}
-	
+	//if yes, loop continues
+	while (input == "Y\0" || input == "y\0");
+
+	delete dict;
 	system("pause");
+	return 1;
 }
