@@ -29,6 +29,7 @@ bool PhonebookManager::addFromFile(string loc, bool mutate)
 		stream >> in;
 		addWord(in, mutate);
 	}
+	stream.close();
 	return true;
 }
 
@@ -43,12 +44,6 @@ void PhonebookManager::addWord(string word, bool mutate)
 		return;
 	//This will be used to remember the phonebook location
 	int accessPos;
-	int low = 0;
-	int high = master->size() - 1;
-	int mid = 0;
-	//Try to find the correct phonebook
-	bool found = false;
-
 
 	//If empty master, create a new phonebook
 	if (master->size() == 0)
@@ -58,56 +53,32 @@ void PhonebookManager::addWord(string word, bool mutate)
 		master->push_back(newEntry);
 	}
 	else {
-		while (low <= high)
-		{
-			mid = (low + high) / 2;
-			//if mid is target number
-			if (length==master->at(mid)->getLength())
-			{
-				found = true;
-				accessPos = mid;
-				break;
-			}
-			//if search is less than mid
-			else if (length < master->at(mid)->getLength())
-			{
-				high = mid - 1;
-			}
-			//if search is greater than mid
-			else
-			{
-				low = mid + 1;
-			}
-		}
+		accessPos = findBook(word);
 
 		//if not found, create number at mid from binary search
-		if (!found)
+		if (accessPos<0)
 		{
+			accessPos = (-1 * accessPos) - 1;
 			//Number goes in front of mid
-			if (length < master->at(mid)->getLength())
+			if (length < master->at(accessPos)->getLength())
 			{
-				vector<Phonebook*>::iterator ite = master->begin() + mid;
+				vector<Phonebook*>::iterator ite = master->begin() + accessPos;
 				master->insert(ite, new Phonebook(length));
-				accessPos = mid;
 			}
 			//Number goes behind mid
 			else
 			{
-				vector<Phonebook*>::iterator ite = master->begin() + mid + 1;
+				vector<Phonebook*>::iterator ite = master->begin() + accessPos + 1;
 				master->insert(ite, new Phonebook(length));
-				accessPos = mid + 1;
+				accessPos += 1;
 			}
 		}
 	}
-	//Return true if word/words are added
+	//Add plain word or mutated words
 	if (mutate)
-	{
-		master->at(accessPos)->generateWords(word);
-	}
+		master->at(accessPos)->generateWords(word,0);
 	else
-	{
 		master->at(accessPos)->addWord(word);
-	}
 
 	return;
 }
@@ -121,10 +92,47 @@ bool PhonebookManager::findWord(string word)
 	if (accessPos < 0)
 		return false;
 	else
-		return master->at(accessPos)->findWord(word);
+		return master->at(accessPos-1)->findWord(word);
 		
 }
 
+bool PhonebookManager::printAllFor(string num)
+{
+	int length;
+	//The length of num is greater than MAX
+	if (num.length()>MAX)
+	{
+		length = MAX;
+	}
+	//Length of num is too small to print any Phonewords for
+	else if(num.length()<MIN)
+	{
+		cout << num << " is less than the minimum of " << MIN << "." << endl;
+		return;
+	}
+	//The length of num is between MIN and MAX
+	else
+	{
+		length = num.length();
+	}
+	while (length >= MIN)
+	{
+		for (int pos = 0; pos + length <= num.length(); pos++)
+		{
+			int accessPos = findBook(num.substr(pos, length));
+			if (accessPos > 0)
+			{
+				master->at(accessPos - 1)->printAllFor(num.substr(pos, length));
+			}
+		}
+		length--;
+	}
+}
+
+//------------------------------------------------------------------------
+// Searches for the correct phonebook location for a word
+// Returns a int +(index+1) for the location of the phonebook if found
+// Returns a int -(index+1) for where binary serach stopped otherwise
 int PhonebookManager::findBook(string word)
 {
 	{
@@ -136,7 +144,7 @@ int PhonebookManager::findBook(string word)
 			//if mid is target number
 			if (length == master->at(mid)->getLength())
 			{
-				return mid;
+				return mid+1;
 			}
 			//if search is less than mid
 			else if (length < master->at(mid)->getLength())
@@ -149,7 +157,7 @@ int PhonebookManager::findBook(string word)
 				low = mid + 1;
 			}
 		}
-		return -1;
+		return -1*(mid+1);
 	}
 }
 
@@ -162,7 +170,7 @@ bool PhonebookManager::delWord(string word)
 	if (accessPos < 0)
 		return false;
 	else
-		return master->at(accessPos)->delWord(word);
+		return master->at(accessPos-1)->delWord(word);
 }
 
 //------------------------------------------------------------------------
