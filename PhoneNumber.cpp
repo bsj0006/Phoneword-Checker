@@ -23,7 +23,6 @@ string PhoneNumber::getNumber()
 
 //Adds a word to this number
 //Returns true if word is added, false otherwise.
-
 bool PhoneNumber::addWord(string word)
 {
 	if (findWord(word))
@@ -36,6 +35,8 @@ bool PhoneNumber::addWord(string word)
 	return true;
 }
 
+//Adds a word and argument to this number
+//Returns true if word is added, false otherwise.
 bool PhoneNumber::addWord(string word, string args)
 {
 	if (findWord(word))
@@ -46,22 +47,6 @@ bool PhoneNumber::addWord(string word, string args)
 	newHead->add_node(head);
 	head = newHead;
 	return true;
-}
-
-//Adds a number to this word without checking for duplicates
-void PhoneNumber::forceWord(string word)
-{
-	Node<string>* newHead = new Node<string>(word);
-	newHead->add_node(head);
-	head = newHead;
-}
-
-//Adds a number to this word without checking for duplicates
-void PhoneNumber::forceWord(string word, string args)
-{
-	Node<string>* newHead = new Node<string>(word,args);
-	newHead->add_node(head);
-	head = newHead;
 }
 
 bool PhoneNumber::findWord(string word)
