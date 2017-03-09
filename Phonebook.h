@@ -6,24 +6,24 @@
 class Phonebook
 {
 public:
-	Phonebook();
+	Phonebook(int);
 	~Phonebook();
 
-	bool addFromFile(string,bool);
 	bool addWord(string);
 	bool findWord(string);
 	bool delWord(string);
 
-	bool verifyStr(string);
 	string wordToNum(string);
 
 	bool printAllFor(string);
 	Node<PhoneNumber>* getWordList(string);
-	void printD();
+	int getCount();
+	int getLength();
+	void generateWords(string, int);
 
 private:
 	vector<PhoneNumber*>* book;
-	void generateWords(string, int);
-	int debug;
+	int length;
+	int count;
 };
 

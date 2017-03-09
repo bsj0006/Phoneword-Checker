@@ -1,43 +1,13 @@
 #include "Phonebook.h"
 
-Phonebook::Phonebook()
+Phonebook::Phonebook(int len)
 {
-	book = new vector<PhoneNumber*>();
-	debug = 0;
+	length = len;
 }
 
 Phonebook::~Phonebook()
 {
 	delete book;
-}
-
-//------------------------------------------------------------------------
-// Takes strings from a specified file and adds them to the dictionary
-// Takes bool param to determine if word mutations should be made too
-// Returns false if file fails to open
-bool Phonebook::addFromFile(string loc, bool mutate)
-{
-	ifstream stream;
-	if (!openfile(stream, loc))
-		return false;
-	string in;
-	if (mutate)
-	{
-		while (!stream.eof())
-		{
-			stream >> in;
-			generateWords(in, 0);
-		}
-	}
-	else
-	{
-		while (!stream.eof())
-		{
-			stream >> in;
-			addWord(in);
-		}
-	}
-	return true;	
 }
 
 //------------------------------------------------------------------------
@@ -108,11 +78,12 @@ bool Phonebook::addWord(string mainWord)
 		}
 	}
 
-	debug++;
 	cout << mainWord << endl;
-	printD();
-	if(book->at(accessPos)->addWord(mainWord))
+	if (book->at(accessPos)->addWord(mainWord))
+	{
+		count++;
 		return true;
+	}
 	return false;
 }
 
@@ -140,7 +111,6 @@ bool Phonebook::findWord(string mainWord)
 			high = mid - 1;
 		}
 		//if mid is greater than target number
-		//if search is greater than mid
 		else
 		{
 			low = mid + 1;
@@ -172,7 +142,6 @@ bool Phonebook::delWord(string mainWord)
 		{
 			high = mid - 1;
 		}
-		//if mid is greater than target number
 		//if search is greater than mid
 		else
 		{
@@ -181,20 +150,6 @@ bool Phonebook::delWord(string mainWord)
 	}
 	return false;
 }
-
-//------------------------------------------------------------------------
-// Verifies that a string only contains numbers.
-// Returns true if only numbers are in the string, false otherwise.
-bool Phonebook::verifyStr(string num)
-{
-	for (unsigned int c = 0; c < num.length(); c++)
-	{
-		if (num.at(c) <= '0' || num.at(c) >= '9')
-			return false;
-	}
-	return true;
-}
-
 
 //------------------------------------------------------------------------
 // Converts each letter in word to a corresponding number
@@ -242,6 +197,7 @@ string Phonebook::wordToNum(string word)
 	return ret;
 }
 
+//
 bool Phonebook::printAllFor(string mainNumber)
 {
 	int high = book->size() - 1, mid = 0, low = 0;
@@ -270,15 +226,13 @@ bool Phonebook::printAllFor(string mainNumber)
 	return false;
 }
 
-
 //------------------------------------------------------------------------
-// PRINTS DEBUG VALUE
+//  Returns a count of the total number of words within this book
 //
-void Phonebook::printD()
+int Phonebook::getCount()
 {
-	cout << debug << endl;
+	return count;
 }
-
 
 //------------------------------------------------------------------------
 // Used to recursively create mutated words by changing letters to numbers
