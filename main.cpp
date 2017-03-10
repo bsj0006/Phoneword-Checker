@@ -11,10 +11,15 @@ int main(void)
 {
 	//Object for validating phone number
 	PhonebookManager* dict = new PhonebookManager();
+	dict->test();
 	dict->addFromFile("C:/Temp/dictionary_four_letter_words.txt", true);
+	cout << dict->getTotal() << endl;
 	dict->addFromFile("C:/Temp/dictionary_five_letter_words.txt", true);
+	cout << dict->getTotal() << endl;
 	dict->addFromFile("C:/Temp/dictionary_six_letter_words.txt", true);
+	cout << dict->getTotal() << endl;
 	dict->addFromFile("C:/Temp/dictionary_seven_letter_words.txt", true);
+	cout << dict->getTotal() << endl;
 	//String for storing user input
 	string input="";
 
@@ -33,6 +38,7 @@ int main(void)
 
 		//run checker and wait for return
 		cout << "In:" << input << endl;
+		dict->printAllFor(input);
 
 		//ask to continue
 		cout << endl << "Type Y to continue or a different letter to quit." << endl;
