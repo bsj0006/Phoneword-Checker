@@ -103,3 +103,9 @@ bool PhoneNumber::printWords()
 	}
 	return false;
 }
+
+bool PhoneNumber::isEmpty()
+{
+	if (head == NULL)
+		return true;
+}

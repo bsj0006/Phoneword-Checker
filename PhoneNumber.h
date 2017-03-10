@@ -19,6 +19,8 @@ public:
 
 	bool printWords();
 
+	bool isEmpty();
+
 private:
 	string number;
 	Node<string>* head;
