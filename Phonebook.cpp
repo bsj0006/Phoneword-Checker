@@ -2,7 +2,9 @@
 
 Phonebook::Phonebook(int len)
 {
+	book = new vector<PhoneNumber*>(0);
 	length = len;
+	count = 0;
 }
 
 Phonebook::~Phonebook()
@@ -27,7 +29,7 @@ bool Phonebook::addWord(string mainWord)
 
 
 	//If empty phonebook, add number
-	if (book->size() == 0)
+	if (book->empty())
 	{
 		accessPos = 0;
 		PhoneNumber* newEntry = new PhoneNumber(mainNumber);
@@ -232,6 +234,11 @@ bool Phonebook::printAllFor(string mainNumber)
 int Phonebook::getCount()
 {
 	return count;
+}
+
+int Phonebook::getLength()
+{
+	return length;
 }
 
 //------------------------------------------------------------------------
