@@ -4,6 +4,9 @@
 
 using namespace std;
 
+#define MAX 10
+#define MIN 4
+
 class PhonebookManager
 {
 public:
@@ -16,10 +19,8 @@ public:
 	bool printAllFor(string);
 	bool verifyIntString(string);
 	int getTotal();
+	bool test();
+	vector<Phonebook*>* master;
 private:
 	int findBook(string);
-	const int MIN = 4;
-	const int MAX = 10;
-	vector<Phonebook*>* master;
 };
-

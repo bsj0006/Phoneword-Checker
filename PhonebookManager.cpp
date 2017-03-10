@@ -1,18 +1,16 @@
 #include "PhonebookManager.h"
 
-
+using namespace std;
 
 PhonebookManager::PhonebookManager()
 {
-
+	master = new vector<Phonebook*>(0);
 }
-
 
 PhonebookManager::~PhonebookManager()
 {
 	delete master;
 }
-
 
 //------------------------------------------------------------------------
 // Takes strings from a specified file and adds them to a phonebook
@@ -38,15 +36,14 @@ bool PhonebookManager::addFromFile(string loc, bool mutate)
 // Returns true if word is added
 void PhonebookManager::addWord(string word, bool mutate)
 {
-	int length = word.length();
+	unsigned int length = word.length();
 	//if outside of limits, return
 	if (length > MAX || length < MIN)
 		return;
 	//This will be used to remember the phonebook location
 	int accessPos;
-
 	//If empty master, create a new phonebook
-	if (master->size() == 0)
+	if (master->empty())
 	{
 		accessPos = 0;
 		Phonebook* newEntry = new Phonebook(length);
@@ -56,11 +53,11 @@ void PhonebookManager::addWord(string word, bool mutate)
 		accessPos = findBook(word);
 
 		//if not found, create number at mid from binary search
-		if (accessPos<0)
+		if (accessPos < 0)
 		{
 			accessPos = (-1 * accessPos) - 1;
 			//Number goes in front of mid
-			if (length < master->at(accessPos)->getLength())
+			if (length < (master->at(accessPos)->getLength()))
 			{
 				vector<Phonebook*>::iterator ite = master->begin() + accessPos;
 				master->insert(ite, new Phonebook(length));
@@ -73,6 +70,8 @@ void PhonebookManager::addWord(string word, bool mutate)
 				accessPos += 1;
 			}
 		}
+		else
+			accessPos -= 1;
 	}
 	//Add plain word or mutated words
 	if (mutate)
@@ -98,7 +97,7 @@ bool PhonebookManager::findWord(string word)
 
 bool PhonebookManager::printAllFor(string num)
 {
-	int length;
+	unsigned int length;
 	//The length of num is greater than MAX
 	if (num.length()>MAX)
 	{
@@ -108,7 +107,7 @@ bool PhonebookManager::printAllFor(string num)
 	else if(num.length()<MIN)
 	{
 		cout << num << " is less than the minimum of " << MIN << "." << endl;
-		return;
+		return false;
 	}
 	//The length of num is between MIN and MAX
 	else
@@ -120,6 +119,7 @@ bool PhonebookManager::printAllFor(string num)
 		for (int pos = 0; pos + length <= num.length(); pos++)
 		{
 			int accessPos = findBook(num.substr(pos, length));
+			//If the correct phonebook exists, print any available words.
 			if (accessPos > 0)
 			{
 				master->at(accessPos - 1)->printAllFor(num.substr(pos, length));
@@ -127,6 +127,7 @@ bool PhonebookManager::printAllFor(string num)
 		}
 		length--;
 	}
+	return true;
 }
 
 //------------------------------------------------------------------------
@@ -180,7 +181,7 @@ bool PhonebookManager::verifyIntString(string num)
 {
 	for (unsigned int c = 0; c < num.length(); c++)
 	{
-		if (num.at(c) <= '0' || num.at(c) >= '9')
+		if (num.at(c) < '0' || num.at(c) > '9')
 			return false;
 	}
 	return true;
@@ -192,9 +193,15 @@ bool PhonebookManager::verifyIntString(string num)
 int PhonebookManager::getTotal()
 {
 	int return_val = 0;
-	for (int pos = 0; pos < master->size(); pos++)
+	for (unsigned int pos = 0; pos < master->size(); pos++)
 	{
 		return_val += master->at(pos)->getCount();
 	}
 	return return_val;
+}
+
+bool PhonebookManager::test()
+{
+	cout << master->size() << endl;
+	return true;
 }
